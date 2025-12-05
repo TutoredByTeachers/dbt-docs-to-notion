@@ -44,6 +44,9 @@ runs:
     - name: Load dbt deps
       run: "dbt deps --profiles-dir ${{ inputs.dbt-profile-path }} --target=${{ inputs.dbt-target }}"
       shell: bash
+    - name: Compile DBT with no introspect
+      run: "dbt compile --no-introspect --profiles-dir ${{ inputs.dbt-profile-path }} --target=${{ inputs.dbt-target }}"
+      shell: bash
     - name: Generate dbt Docs
       run: "dbt docs generate --profiles-dir ${{ inputs.dbt-profile-path }} --target=${{ inputs.dbt-target }} ${{ inputs.dbt-generate-options }}"
       shell: bash
