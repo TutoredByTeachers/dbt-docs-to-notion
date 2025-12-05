@@ -14,6 +14,10 @@ inputs:
   dbt-target:
     description: 'profile target to use for dbt docs generation'
     required: true
+  dbt-generate-options:
+    description: 'additional options to provide to dbt docs generate ("--no-compile --empty-catalog" for example)'
+    required: false
+    default: ''
   model-records-to-write:
     description: \"all\" or \"model_name_1 model_name_2 ...\"
     required: false
@@ -41,7 +45,7 @@ runs:
       run: "dbt deps --profiles-dir ${{ inputs.dbt-profile-path }} --target=${{ inputs.dbt-target }}"
       shell: bash
     - name: Generate dbt Docs
-      run: "dbt docs generate --profiles-dir ${{ inputs.dbt-profile-path }} --target=${{ inputs.dbt-target }}"
+      run: "dbt docs generate --profiles-dir ${{ inputs.dbt-profile-path }} --target=${{ inputs.dbt-target }} ${{ inputs.dbt-generate-options }}"
       shell: bash
     - name: Export dbt Docs to Notion
       run: "python3 ${{ github.action_path }}/dbt_docs_to_notion.py ${{ inputs.model-records-to-write }}"
